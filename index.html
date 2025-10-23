@@ -2120,7 +2120,13 @@
                 this.compare = JSON.parse(localStorage.getItem('compare')) || [];
                 this.currentPage = 'home';
                 this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-                this.init();
+                
+                // Инициализация после загрузки DOM
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', () => this.init());
+                } else {
+                    this.init();
+                }
             }
 
             init() {
@@ -2129,6 +2135,11 @@
                 this.updateCompareCount();
                 this.displayFeaturedProducts();
                 this.updateUserUI();
+                
+                // Показываем уведомление о готовности
+                setTimeout(() => {
+                    this.showNotification('Сайт успешно загружен!');
+                }, 1000);
             }
 
             setupEventListeners() {
@@ -2439,9 +2450,28 @@
 
             displayFeaturedProducts() {
                 const container = document.getElementById('featuredProducts');
-                if (!container) return;
+                if (!container) {
+                    console.error('Контейнер featuredProducts не найден');
+                    return;
+                }
 
-                container.innerHTML = products.featured.map(product => this.createProductCard(product)).join('');
+                try {
+                    container.innerHTML = products.featured.map(product => this.createProductCard(product)).join('');
+                    console.log('Продукты успешно отображены');
+                } catch (error) {
+                    console.error('Ошибка при отображении продуктов:', error);
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 3rem; color: #666; grid-column: 1 / -1;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 4rem; margin-bottom: 1rem; color: var(--warning);"></i>
+                            <h3 style="color: var(--dark); margin-bottom: 1rem;">Ошибка загрузки товаров</h3>
+                            <p>Попробуйте обновить страницу</p>
+                            <button class="btn" onclick="location.reload()" style="margin-top: 1.5rem;">
+                                <i class="fas fa-redo"></i>
+                                Обновить страницу
+                            </button>
+                        </div>
+                    `;
+                }
             }
 
             displayGamingProducts() {
@@ -2470,6 +2500,7 @@
 
             createProductCard(product) {
                 const isInCompare = this.compare.some(item => item.id === product.id);
+                const isInCart = this.cart.some(item => item.id === product.id);
                 
                 return `
                     <div class="product-card fade-in">
@@ -2490,9 +2521,9 @@
                                     <i class="fas fa-balance-scale"></i>
                                     ${isInCompare ? 'В сравнении' : 'Сравнить'}
                                 </button>
-                                <button class="btn" onclick="pcmaster.addToCart(${product.id})">
+                                <button class="btn ${isInCart ? 'btn-success' : ''}" onclick="pcmaster.addToCart(${product.id})">
                                     <i class="fas fa-cart-plus"></i>
-                                    В корзину
+                                    ${isInCart ? 'В корзине' : 'В корзину'}
                                 </button>
                             </div>
                         </div>
@@ -2593,7 +2624,7 @@
                                 <i class="fas fa-balance-scale"></i>
                                 ${isInCompare ? 'В сравнении' : 'Сравнить'}
                             </button>
-                            <button class="btn ${isInCart ? 'btn-accent' : ''}" onclick="pcmaster.addToCart(${product.id})">
+                            <button class="btn ${isInCart ? 'btn-success' : ''}" onclick="pcmaster.addToCart(${product.id})">
                                 <i class="fas fa-cart-plus"></i>
                                 ${isInCart ? 'В корзине' : 'В корзину'}
                             </button>
@@ -2607,20 +2638,39 @@
             }
 
             addToCart(productId) {
-                const allProducts = [...products.featured, ...products.gaming, ...products.office, ...products.components];
-                const product = allProducts.find(p => p.id === productId);
-                
-                if (!product) return;
+                try {
+                    const allProducts = [...products.featured, ...products.gaming, ...products.office, ...products.components];
+                    const product = allProducts.find(p => p.id === productId);
+                    
+                    if (!product) {
+                        this.showNotification('Товар не найден', true);
+                        return;
+                    }
 
-                this.cart.push(product);
-                this.saveCart();
-                this.updateCartCount();
-                this.showNotification('Товар добавлен в корзину');
-                
-                if (this.currentPage === 'cart') {
-                    this.displayCart();
-                } else if (this.currentPage === 'productDetail') {
-                    this.showProductDetail(productId);
+                    // Проверяем, нет ли уже товара в корзине
+                    const existingItem = this.cart.find(item => item.id === productId);
+                    if (existingItem) {
+                        this.showNotification('Товар уже в корзине');
+                        return;
+                    }
+
+                    this.cart.push(product);
+                    this.saveCart();
+                    this.updateCartCount();
+                    this.showNotification('Товар добавлен в корзину');
+                    
+                    // Обновляем отображение
+                    if (this.currentPage === 'cart') {
+                        this.displayCart();
+                    } else if (this.currentPage === 'productDetail') {
+                        this.showProductDetail(productId);
+                    } else {
+                        // Обновляем кнопку на текущей странице
+                        this.refreshProductButtons();
+                    }
+                } catch (error) {
+                    console.error('Ошибка при добавлении в корзину:', error);
+                    this.showNotification('Ошибка при добавлении в корзину', true);
                 }
             }
 
@@ -2643,6 +2693,40 @@
                 this.updateCartCount();
                 this.displayCart();
                 this.showNotification('Корзина очищена');
+            }
+
+            // Новый метод для обновления кнопок товаров
+            refreshProductButtons() {
+                const productCards = document.querySelectorAll('.product-card');
+                productCards.forEach(card => {
+                    const productId = this.getProductIdFromCard(card);
+                    if (productId) {
+                        const isInCart = this.cart.some(item => item.id === productId);
+                        const isInCompare = this.compare.some(item => item.id === productId);
+                        
+                        const cartButton = card.querySelector('.product-actions .btn:last-child');
+                        const compareButton = card.querySelector('.product-actions .btn:nth-child(2)');
+                        
+                        if (cartButton) {
+                            cartButton.className = `btn ${isInCart ? 'btn-success' : ''}`;
+                            cartButton.innerHTML = `<i class="fas fa-cart-plus"></i> ${isInCart ? 'В корзине' : 'В корзину'}`;
+                        }
+                        
+                        if (compareButton) {
+                            compareButton.className = `btn ${isInCompare ? 'btn-accent' : 'btn-outline'}`;
+                            compareButton.innerHTML = `<i class="fas fa-balance-scale"></i> ${isInCompare ? 'В сравнении' : 'Сравнить'}`;
+                        }
+                    }
+                });
+            }
+
+            getProductIdFromCard(card) {
+                const button = card.querySelector('.product-actions .btn');
+                if (button && button.onclick) {
+                    const match = button.onclick.toString().match(/showProductDetail\((\d+)\)/);
+                    return match ? parseInt(match[1]) : null;
+                }
+                return null;
             }
 
             shareCart() {
@@ -2996,6 +3080,11 @@
 
             showNotification(message, isError = false) {
                 const notification = document.getElementById('notification');
+                if (!notification) {
+                    console.log('Notification:', message);
+                    return;
+                }
+                
                 notification.textContent = message;
                 notification.className = `notification ${isError ? 'error' : ''}`;
                 notification.classList.add('show');
@@ -3006,25 +3095,61 @@
             }
         }
 
-        // Инициализация приложения
-        const pcmaster = new PCMaster();
+        // Инициализация приложения с обработкой ошибок
+        let pcmaster;
+        try {
+            pcmaster = new PCMaster();
+            window.pcmaster = pcmaster; // Делаем глобально доступным
+        } catch (error) {
+            console.error('Ошибка инициализации приложения:', error);
+            
+            // Показываем сообщение об ошибке
+            document.addEventListener('DOMContentLoaded', () => {
+                const container = document.getElementById('featuredProducts') || document.querySelector('main');
+                if (container) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 3rem; color: #666;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 4rem; margin-bottom: 1rem; color: var(--accent);"></i>
+                            <h3 style="color: var(--dark); margin-bottom: 1rem;">Ошибка загрузки приложения</h3>
+                            <p>Попробуйте обновить страницу или проверьте консоль для подробностей</p>
+                            <button class="btn btn-accent" onclick="location.reload()" style="margin-top: 1.5rem;">
+                                <i class="fas fa-redo"></i>
+                                Обновить страницу
+                            </button>
+                        </div>
+                    `;
+                }
+            });
+        }
 
-        // Закрытие модальных окон при клике вне их
-        document.getElementById('authModal').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('authModal')) {
-                pcmaster.hideAuthModal();
+        // Обработчики для модальных окон
+        document.addEventListener('DOMContentLoaded', function() {
+            const authModal = document.getElementById('authModal');
+            const compareModal = document.getElementById('compareModal');
+            const shareModal = document.getElementById('shareModal');
+
+            if (authModal) {
+                authModal.addEventListener('click', (e) => {
+                    if (e.target === authModal) {
+                        pcmaster?.hideAuthModal();
+                    }
+                });
             }
-        });
 
-        document.getElementById('compareModal').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('compareModal')) {
-                pcmaster.hideCompareModal();
+            if (compareModal) {
+                compareModal.addEventListener('click', (e) => {
+                    if (e.target === compareModal) {
+                        pcmaster?.hideCompareModal();
+                    }
+                });
             }
-        });
 
-        document.getElementById('shareModal').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('shareModal')) {
-                pcmaster.hideShareModal();
+            if (shareModal) {
+                shareModal.addEventListener('click', (e) => {
+                    if (e.target === shareModal) {
+                        pcmaster?.hideShareModal();
+                    }
+                });
             }
         });
     </script>
