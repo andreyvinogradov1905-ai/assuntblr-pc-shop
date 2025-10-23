@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PC Master - Магазин компьютеров и сборка ПК</title>
+    <title>ASSUNTBLR PC - Магазин компьютеров и сборка ПК</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
+            --primary: #1a472a;
+            --secondary: #27ae60;
             --accent: #e74c3c;
             --light: #ecf0f1;
             --dark: #2c3e50;
             --success: #2ecc71;
             --warning: #f39c12;
+            --orange: #e74c3c;
+            --green-light: #d5f5e3;
+            --green-dark: #145a32;
         }
         
         * {
@@ -65,7 +68,7 @@
         }
         
         .logo span {
-            color: var(--secondary);
+            color: var(--orange);
         }
         
         .logo i {
@@ -170,10 +173,11 @@
             border: none;
             cursor: pointer;
             transition: all 0.3s;
+            white-space: nowrap;
         }
         
         .btn:hover {
-            background-color: #2980b9;
+            background-color: #219653;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
@@ -207,7 +211,7 @@
         
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(44, 62, 80, 0.85), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1593640408182-31c70c8268f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1342&q=80');
+            background: linear-gradient(rgba(26, 71, 42, 0.85), rgba(26, 71, 42, 0.9)), url('https://images.unsplash.com/photo-1593640408182-31c70c8268f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1342&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -225,7 +229,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 20% 50%, rgba(52, 152, 219, 0.2) 0%, transparent 50%),
+            background: radial-gradient(circle at 20% 50%, rgba(39, 174, 96, 0.2) 0%, transparent 50%),
                         radial-gradient(circle at 80% 20%, rgba(231, 76, 60, 0.15) 0%, transparent 50%);
         }
         
@@ -416,14 +420,16 @@
         
         .product-actions {
             display: flex;
-            justify-content: space-between;
+            flex-wrap: wrap;
             gap: 0.5rem;
         }
         
         .product-actions .btn {
             flex: 1;
+            min-width: 120px;
             padding: 0.6rem 0.8rem;
             font-size: 0.9rem;
+            justify-content: center;
         }
         
         /* Search Bar */
@@ -446,7 +452,7 @@
         .search-bar:focus {
             outline: none;
             border-color: var(--secondary);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
         }
         
         .search-bar::placeholder {
@@ -493,7 +499,7 @@
         .filter-group input:focus {
             outline: none;
             border-color: var(--secondary);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
         }
         
         .filter-group option {
@@ -892,7 +898,7 @@
         }
         
         .share-link button:hover {
-            background-color: #2980b9;
+            background-color: #219653;
         }
         
         /* Notification */
@@ -929,7 +935,7 @@
         
         /* Footer */
         footer {
-            background-color: var(--dark);
+            background-color: var(--primary);
             color: white;
             padding: 3rem 0 1rem;
             margin-top: auto;
@@ -1008,7 +1014,7 @@
         .copyright {
             text-align: center;
             padding-top: 2rem;
-            border-top: 1px solid #444;
+            border-top: 1px solid rgba(255,255,255,0.1);
             font-size: 0.9rem;
             color: #aaa;
         }
@@ -1044,33 +1050,94 @@
             transform: translateY(-3px);
         }
         
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .mobile-nav {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: var(--primary);
+            padding: 1rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            z-index: 99;
+        }
+        
+        .mobile-nav.active {
+            display: block;
+        }
+        
+        .mobile-nav ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .mobile-nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            display: block;
+            transition: color 0.3s;
+        }
+        
+        .mobile-nav ul li a:hover {
+            color: var(--secondary);
+        }
+        
         /* Responsive */
+        @media (max-width: 1024px) {
+            .product-actions .btn {
+                min-width: 100px;
+                font-size: 0.85rem;
+            }
+        }
+        
         @media (max-width: 768px) {
             .header-content {
-                flex-direction: column;
-                text-align: center;
+                flex-direction: row;
+                text-align: left;
             }
             
-            nav ul {
-                margin: 1rem 0;
-                flex-wrap: wrap;
-                justify-content: center;
+            .mobile-menu-toggle {
+                display: block;
             }
             
-            nav ul li {
-                margin: 0.5rem;
+            nav.desktop-nav {
+                display: none;
+            }
+            
+            .header-actions {
+                margin-top: 0;
             }
             
             .hero h1 {
                 font-size: 2rem;
             }
             
+            .hero p {
+                font-size: 1rem;
+            }
+            
             .product-actions {
                 flex-direction: column;
             }
             
-            .header-actions {
-                margin-top: 1rem;
+            .product-actions .btn {
+                min-width: auto;
+                width: 100%;
             }
             
             .product-detail {
@@ -1092,6 +1159,81 @@
             .product-detail-actions {
                 flex-direction: column;
             }
+            
+            .product-detail-actions .btn {
+                min-width: auto;
+            }
+            
+            .filter-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-group select,
+            .filter-group input {
+                width: 100%;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .footer-column h3:after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .social-links {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                width: 95%;
+            }
+            
+            .hero {
+                padding: 3rem 0;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .product-detail-image span {
+                font-size: 5rem;
+            }
+            
+            .product-detail-title {
+                font-size: 1.5rem;
+            }
+            
+            .product-detail-price {
+                font-size: 1.5rem;
+            }
+            
+            .categories {
+                grid-template-columns: 1fr;
+            }
+            
+            .products {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .header-actions .btn {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.9rem;
+            }
         }
         
         /* Animations */
@@ -1112,9 +1254,14 @@
             <div class="header-content">
                 <a href="#" class="logo" data-page="home">
                     <i class="fas fa-desktop"></i>
-                    PC<span>Master</span>
+                    <span>ASSUNTBLR</span> PC
                 </a>
-                <nav>
+                
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <nav class="desktop-nav">
                     <ul>
                         <li><a href="#" class="nav-link active" data-page="home">Главная</a></li>
                         <li><a href="#" class="nav-link" data-page="gaming">Игровые ПК</a></li>
@@ -1123,6 +1270,7 @@
                         <li><a href="#" class="nav-link" data-page="cart">Корзина</a></li>
                     </ul>
                 </nav>
+                
                 <div class="header-actions">
                     <div class="compare-icon" id="compareBtn">
                         <i class="fas fa-balance-scale"></i>
@@ -1138,6 +1286,17 @@
                     </button>
                 </div>
             </div>
+            
+            <!-- Mobile Navigation -->
+            <nav class="mobile-nav" id="mobileNav">
+                <ul>
+                    <li><a href="#" class="nav-link active" data-page="home">Главная</a></li>
+                    <li><a href="#" class="nav-link" data-page="gaming">Игровые ПК</a></li>
+                    <li><a href="#" class="nav-link" data-page="office">Офисные ПК</a></li>
+                    <li><a href="#" class="nav-link" data-page="components">Комплектующие</a></li>
+                    <li><a href="#" class="nav-link" data-page="cart">Корзина</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
@@ -1149,7 +1308,7 @@
             <section class="hero">
                 <div class="container">
                     <div class="hero-content">
-                        <h1>PC Master - Собери свой идеальный компьютер</h1>
+                        <h1>ASSUNTBLR PC - Собери свой идеальный компьютер</h1>
                         <p>Профессиональная сборка ПК, игровые компьютеры и комплектующие с гарантией качества</p>
                         <div class="hero-buttons">
                             <a href="#" class="btn btn-accent" data-page="gaming">
@@ -1349,7 +1508,7 @@
             <div class="container">
                 <h2 class="section-title">Корзина покупок</h2>
                 <p style="text-align: center; margin-bottom: 2rem;">Ваши выбранные товары</p>
-                <div class="cart-actions" style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem;">
+                <div class="cart-actions" style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap;">
                     <button class="btn btn-success" id="shareCartBtn">
                         <i class="fas fa-share-alt"></i>
                         Поделиться корзиной
@@ -1371,7 +1530,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
-                    <h3>PC Master</h3>
+                    <h3>ASSUNTBLR PC</h3>
                     <p>Профессиональная сборка компьютеров с 2010 года. Гарантия качества и лучшие цены.</p>
                     <div class="social-links">
                         <a href="#" class="social-link"><i class="fab fa-vk"></i></a>
@@ -1402,13 +1561,13 @@
                     <h4>Контакты</h4>
                     <ul>
                         <li><a href="tel:+79991234567"><i class="fas fa-phone"></i> +7 (999) 123-45-67</a></li>
-                        <li><a href="mailto:info@pcmaster.ru"><i class="fas fa-envelope"></i> info@pcmaster.ru</a></li>
+                        <li><a href="mailto:info@assuntblr.ru"><i class="fas fa-envelope"></i> info@assuntblr.ru</a></li>
                         <li><a href="#"><i class="fas fa-map-marker-alt"></i> Москва, ул. Компьютерная, 15</a></li>
                     </ul>
                 </div>
             </div>
             <div class="copyright">
-                &copy; 2024 PC Master. Все права защищены.
+                &copy; 2024 ASSUNTBLR PC. Все права защищены.
             </div>
         </div>
     </footer>
@@ -2114,7 +2273,7 @@
         };
 
         // Основной класс приложения
-        class PCMaster {
+        class ASSUNTBLRPC {
             constructor() {
                 this.cart = JSON.parse(localStorage.getItem('cart')) || [];
                 this.compare = JSON.parse(localStorage.getItem('compare')) || [];
@@ -2177,6 +2336,11 @@
                         const page = e.target.closest('[data-page]').dataset.page;
                         this.showPage(page);
                     });
+                });
+
+                // Мобильное меню
+                document.getElementById('mobileMenuToggle').addEventListener('click', () => {
+                    this.toggleMobileMenu();
                 });
 
                 // Авторизация
@@ -2297,6 +2461,11 @@
                         backToTop.classList.remove('visible');
                     }
                 });
+            }
+
+            toggleMobileMenu() {
+                const mobileNav = document.getElementById('mobileNav');
+                mobileNav.classList.toggle('active');
             }
 
             setupFilters() {
@@ -2435,6 +2604,9 @@
             }
 
             showPage(page) {
+                // Закрыть мобильное меню при переходе на страницу
+                document.getElementById('mobileNav').classList.remove('active');
+
                 // Обновляем URL без перезагрузки страницы
                 const newUrl = new URL(window.location);
                 newUrl.searchParams.set('page', page);
@@ -2545,15 +2717,15 @@
                             <p class="product-description">${product.description}</p>
                             <div class="product-price">${this.formatPrice(product.price)}</div>
                             <div class="product-actions">
-                                <button class="btn btn-outline" onclick="pcmaster.showProductDetail(${product.id})">
+                                <button class="btn btn-outline" onclick="assuntblrpc.showProductDetail(${product.id})">
                                     <i class="fas fa-info-circle"></i>
                                     Подробнее
                                 </button>
-                                <button class="btn ${isInCompare ? 'btn-accent' : 'btn-outline'}" onclick="pcmaster.toggleCompare(${product.id})">
+                                <button class="btn ${isInCompare ? 'btn-accent' : 'btn-outline'}" onclick="assuntblrpc.toggleCompare(${product.id})">
                                     <i class="fas fa-balance-scale"></i>
                                     ${isInCompare ? 'В сравнении' : 'Сравнить'}
                                 </button>
-                                <button class="btn ${isInCart ? 'btn-success' : ''}" onclick="pcmaster.addToCart(${product.id})">
+                                <button class="btn ${isInCart ? 'btn-success' : ''}" onclick="assuntblrpc.addToCart(${product.id})">
                                     <i class="fas fa-cart-plus"></i>
                                     ${isInCart ? 'В корзине' : 'В корзину'}
                                 </button>
@@ -2571,7 +2743,7 @@
                             <i class="fas fa-shopping-cart" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;"></i>
                             <h3 style="color: var(--dark); margin-bottom: 1rem;">Корзина пуста</h3>
                             <p>Добавьте товары из каталога</p>
-                            <button class="btn" onclick="pcmaster.showPage('home')" style="margin-top: 1.5rem;">
+                            <button class="btn" onclick="assuntblrpc.showPage('home')" style="margin-top: 1.5rem;">
                                 Перейти в каталог
                             </button>
                         </div>
@@ -2591,11 +2763,11 @@
                             <p class="product-description">${item.description}</p>
                             <div class="product-price">${this.formatPrice(item.price)}</div>
                             <div class="product-actions">
-                                <button class="btn btn-outline" onclick="pcmaster.shareProduct(${item.id})">
+                                <button class="btn btn-outline" onclick="assuntblrpc.shareProduct(${item.id})">
                                     <i class="fas fa-share-alt"></i>
                                     Поделиться
                                 </button>
-                                <button class="btn btn-accent" onclick="pcmaster.removeFromCart(${item.id})">
+                                <button class="btn btn-accent" onclick="assuntblrpc.removeFromCart(${item.id})">
                                     <i class="fas fa-trash"></i>
                                     Удалить
                                 </button>
@@ -2657,15 +2829,15 @@
                         </div>
                         
                         <div class="product-detail-actions">
-                            <button class="btn ${isInCompare ? 'btn-accent' : 'btn-outline'}" onclick="pcmaster.toggleCompare(${product.id})">
+                            <button class="btn ${isInCompare ? 'btn-accent' : 'btn-outline'}" onclick="assuntblrpc.toggleCompare(${product.id})">
                                 <i class="fas fa-balance-scale"></i>
                                 ${isInCompare ? 'В сравнении' : 'Сравнить'}
                             </button>
-                            <button class="btn ${isInCart ? 'btn-success' : ''}" onclick="pcmaster.addToCart(${product.id})">
+                            <button class="btn ${isInCart ? 'btn-success' : ''}" onclick="assuntblrpc.addToCart(${product.id})">
                                 <i class="fas fa-cart-plus"></i>
                                 ${isInCart ? 'В корзине' : 'В корзину'}
                             </button>
-                            <button class="btn btn-success" onclick="pcmaster.shareProduct(${product.id})">
+                            <button class="btn btn-success" onclick="assuntblrpc.shareProduct(${product.id})">
                                 <i class="fas fa-share-alt"></i>
                                 Поделиться
                             </button>
@@ -2778,9 +2950,9 @@
 
                 const total = this.cart.reduce((sum, item) => sum + item.price, 0);
                 const shareUrl = `${window.location.origin}${window.location.pathname}?page=cart&cart=shared`;
-                const shareText = `Моя корзина в PC Master:\n\n${cartItems}\n\nИтого: ${this.formatPrice(total)}\n\nПосмотреть: ${shareUrl}`;
+                const shareText = `Моя корзина в ASSUNTBLR PC:\n\n${cartItems}\n\nИтого: ${this.formatPrice(total)}\n\nПосмотреть: ${shareUrl}`;
 
-                this.showShareModal(shareText, 'Корзина PC Master', shareUrl);
+                this.showShareModal(shareText, 'Корзина ASSUNTBLR PC', shareUrl);
             }
 
             shareProduct(productId) {
@@ -2931,7 +3103,7 @@
                                         <div>${product.name}</div>
                                         <div class="product-price">${this.formatPrice(product.price)}</div>
                                         <div style="margin-top: 1rem;">
-                                            <button class="btn btn-outline" onclick="pcmaster.toggleCompare(${product.id})" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+                                            <button class="btn btn-outline" onclick="assuntblrpc.toggleCompare(${product.id})" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
                                                 <i class="fas fa-times"></i> Удалить
                                             </button>
                                         </div>
@@ -3135,10 +3307,10 @@
         }
 
         // Инициализация приложения с обработкой ошибок
-        let pcmaster;
+        let assuntblrpc;
         try {
-            pcmaster = new PCMaster();
-            window.pcmaster = pcmaster; // Делаем глобально доступным
+            assuntblrpc = new ASSUNTBLRPC();
+            window.assuntblrpc = assuntblrpc; // Делаем глобально доступным
         } catch (error) {
             console.error('Ошибка инициализации приложения:', error);
             
@@ -3170,7 +3342,7 @@
             if (authModal) {
                 authModal.addEventListener('click', (e) => {
                     if (e.target === authModal) {
-                        pcmaster?.hideAuthModal();
+                        assuntblrpc?.hideAuthModal();
                     }
                 });
             }
@@ -3178,7 +3350,7 @@
             if (compareModal) {
                 compareModal.addEventListener('click', (e) => {
                     if (e.target === compareModal) {
-                        pcmaster?.hideCompareModal();
+                        assuntblrpc?.hideCompareModal();
                     }
                 });
             }
@@ -3186,7 +3358,7 @@
             if (shareModal) {
                 shareModal.addEventListener('click', (e) => {
                     if (e.target === shareModal) {
-                        pcmaster?.hideShareModal();
+                        assuntblrpc?.hideShareModal();
                     }
                 });
             }
@@ -3194,7 +3366,7 @@
 
         // Обработка кнопки "Назад" в браузере
         window.addEventListener('popstate', function() {
-            pcmaster.handleUrlParams();
+            assuntblrpc.handleUrlParams();
         });
     </script>
 </body>
