@@ -2136,10 +2136,37 @@
                 this.displayFeaturedProducts();
                 this.updateUserUI();
                 
+                // Обработка URL параметров
+                this.handleUrlParams();
+                
                 // Показываем уведомление о готовности
                 setTimeout(() => {
                     this.showNotification('Сайт успешно загружен!');
                 }, 1000);
+            }
+
+            handleUrlParams() {
+                const urlParams = new URLSearchParams(window.location.search);
+                
+                // Обработка ссылки на товар
+                const productId = urlParams.get('product');
+                if (productId) {
+                    this.showProductDetail(parseInt(productId));
+                    return;
+                }
+                
+                // Обработка ссылки на корзину
+                const cartParam = urlParams.get('cart');
+                if (cartParam === 'shared') {
+                    this.showPage('cart');
+                    return;
+                }
+                
+                // Обработка ссылки на страницу
+                const page = urlParams.get('page');
+                if (page && ['home', 'gaming', 'office', 'components', 'cart'].includes(page)) {
+                    this.showPage(page);
+                }
             }
 
             setupEventListeners() {
@@ -2408,6 +2435,11 @@
             }
 
             showPage(page) {
+                // Обновляем URL без перезагрузки страницы
+                const newUrl = new URL(window.location);
+                newUrl.searchParams.set('page', page);
+                window.history.pushState({}, '', newUrl);
+
                 // Скрыть все страницы
                 document.querySelectorAll('.page-content').forEach(p => {
                     p.classList.remove('active');
@@ -2587,6 +2619,11 @@
                 
                 if (!product) return;
 
+                // Обновляем URL без перезагрузки страницы
+                const newUrl = new URL(window.location);
+                newUrl.searchParams.set('product', productId);
+                window.history.pushState({}, '', newUrl);
+
                 // Скрыть все страницы
                 document.querySelectorAll('.page-content').forEach(p => {
                     p.classList.remove('active');
@@ -2740,9 +2777,10 @@
                 ).join('\n');
 
                 const total = this.cart.reduce((sum, item) => sum + item.price, 0);
-                const shareText = `Моя корзина в PC Master:\n\n${cartItems}\n\nИтого: ${this.formatPrice(total)}\n\nПосмотреть: ${window.location.href}`;
+                const shareUrl = `${window.location.origin}${window.location.pathname}?page=cart&cart=shared`;
+                const shareText = `Моя корзина в PC Master:\n\n${cartItems}\n\nИтого: ${this.formatPrice(total)}\n\nПосмотреть: ${shareUrl}`;
 
-                this.showShareModal(shareText, 'Корзина PC Master');
+                this.showShareModal(shareText, 'Корзина PC Master', shareUrl);
             }
 
             shareProduct(productId) {
@@ -2751,16 +2789,16 @@
                 
                 if (!product) return;
 
-                const shareText = `${product.name}\n${product.description}\n\nЦена: ${this.formatPrice(product.price)}\n\n${window.location.origin}${window.location.pathname}?product=${productId}`;
+                const shareUrl = `${window.location.origin}${window.location.pathname}?product=${productId}`;
+                const shareText = `${product.name}\n${product.description}\n\nЦена: ${this.formatPrice(product.price)}\n\n${shareUrl}`;
 
-                this.showShareModal(shareText, product.name);
+                this.showShareModal(shareText, product.name, shareUrl);
             }
 
-            showShareModal(shareText, title) {
+            showShareModal(shareText, title, shareUrl) {
                 this.currentShareText = shareText;
                 this.currentShareTitle = title;
                 
-                const shareUrl = `https://pcmaster.ru/share?text=${encodeURIComponent(shareText)}`;
                 document.getElementById('shareUrl').value = shareUrl;
                 
                 document.getElementById('shareModal').classList.add('active');
@@ -2773,26 +2811,27 @@
             handleShare(platform) {
                 const text = this.currentShareText;
                 const title = this.currentShareTitle;
+                const shareUrl = document.getElementById('shareUrl').value;
                 
-                let shareUrl = '';
+                let shareLink = '';
                 
                 switch(platform) {
                     case 'vk':
-                        shareUrl = `https://vk.com/share.php?url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent(title)}&description=${encodeURIComponent(text)}`;
+                        shareLink = `https://vk.com/share.php?url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(title)}&description=${encodeURIComponent(text)}`;
                         break;
                     case 'telegram':
-                        shareUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`;
+                        shareLink = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(text)}`;
                         break;
                     case 'whatsapp':
-                        shareUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + window.location.href)}`;
+                        shareLink = `https://wa.me/?text=${encodeURIComponent(text)}`;
                         break;
                     case 'copy':
                         this.copyShareUrl();
                         return;
                 }
                 
-                if (shareUrl) {
-                    window.open(shareUrl, '_blank', 'width=600,height=400');
+                if (shareLink) {
+                    window.open(shareLink, '_blank', 'width=600,height=400');
                     this.showNotification('Открывается окно для публикации');
                 }
             }
@@ -3151,6 +3190,11 @@
                     }
                 });
             }
+        });
+
+        // Обработка кнопки "Назад" в браузере
+        window.addEventListener('popstate', function() {
+            pcmaster.handleUrlParams();
         });
     </script>
 </body>
