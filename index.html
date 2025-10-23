@@ -1,11 +1,3032 @@
-# PC Master - Интернет-магазин компьютеров
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Master - Магазин компьютеров и сборка ПК</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        nav ul li a:hover {
+            color: var(--secondary);
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: width 0.3s;
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .cart-icon, .compare-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.3rem;
+            color: white;
+        }
+        
+        .cart-count, .compare-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            transition: transform 0.3s;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background-color: var(--secondary);
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+        }
+        
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(44, 62, 80, 0.85), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1593640408182-31c70c8268f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1342&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(52, 152, 219, 0.2) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(231, 76, 60, 0.15) 0%, transparent 50%);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+        
+        /* Sections */
+        section {
+            padding: 4rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary);
+            margin: 0.5rem auto;
+            border-radius: 2px;
+        }
+        
+        /* Categories */
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .category-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            text-align: center;
+            padding: 2rem 1rem;
+            position: relative;
+            border: 1px solid rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+        }
+        
+        .category-icon {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+        
+        .category-card:hover .category-icon {
+            transform: scale(1.2);
+        }
+        
+        /* Products */
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            position: relative;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--accent);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+        
+        .product-image {
+            height: 200px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+        }
+        
+        .product-image span {
+            font-size: 4rem;
+            transition: transform 0.5s;
+        }
+        
+        .product-card:hover .product-image span {
+            transform: scale(1.1);
+        }
+        
+        .product-info {
+            padding: 1.5rem;
+        }
+        
+        .product-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .product-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+        
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .product-price::before {
+            content: '₽';
+            font-size: 1rem;
+            margin-right: 2px;
+        }
+        
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+        
+        .product-actions .btn {
+            flex: 1;
+            padding: 0.6rem 0.8rem;
+            font-size: 0.9rem;
+        }
+        
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            margin: 1rem 0;
+        }
+        
+        .search-bar {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: 50px;
+            background: white;
+            color: #333;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .search-bar::placeholder {
+            color: rgba(0,0,0,0.5);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(0,0,0,0.5);
+        }
+        
+        /* Filters */
+        .filters {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .filter-group {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            padding: 0.8rem 1.2rem;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: 12px;
+            background: white;
+            color: #333;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+        
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .filter-group option {
+            background: white;
+            color: #333;
+        }
+        
+        /* Product Detail Page */
+        .product-detail {
+            display: flex;
+            gap: 3rem;
+            margin: 3rem 0;
+        }
+        
+        .product-detail-image {
+            flex: 1;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 8px;
+            padding: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .product-detail-image span {
+            font-size: 8rem;
+        }
+        
+        .product-detail-info {
+            flex: 1;
+            background-color: white;
+            border-radius: 8px;
+            padding: 3rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+        }
+        
+        .product-detail-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .product-detail-price {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .product-detail-description {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .product-specs {
+            margin: 2rem 0;
+        }
+        
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .spec-name {
+            color: #666;
+        }
+        
+        .spec-value {
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .product-detail-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .product-detail-actions .btn {
+            flex: 1;
+            justify-content: center;
+            padding: 1.2rem;
+            min-width: 150px;
+        }
+        
+        /* Compare Modal */
+        .compare-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .compare-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .compare-content {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s;
+        }
+        
+        .compare-modal.active .compare-content {
+            transform: translateY(0);
+        }
+        
+        .compare-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .compare-header h2 {
+            color: var(--secondary);
+            margin: 0;
+        }
+        
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .compare-table th, .compare-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .compare-table th {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        
+        .compare-table tr:hover {
+            background: rgba(0,0,0,0.05);
+        }
+        
+        .compare-product {
+            text-align: center;
+        }
+        
+        .compare-product-image {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .compare-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        /* Auth Modal */
+        .auth-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .auth-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .auth-content {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: translateY(-20px);
+            transition: transform 0.3s;
+        }
+        
+        .auth-modal.active .auth-content {
+            transform: translateY(0);
+        }
+        
+        .auth-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .auth-tab {
+            flex: 1;
+            padding: 0.8rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .auth-tab.active {
+            color: var(--secondary);
+            border-bottom-color: var(--secondary);
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            border-color: var(--secondary);
+            outline: none;
+        }
+        
+        .auth-footer {
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .auth-footer a {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+        
+        .close-auth, .close-compare {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #777;
+        }
+        
+        /* Share Modal */
+        .share-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .share-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .share-content {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: translateY(-20px);
+            transition: transform 0.3s;
+        }
+        
+        .share-modal.active .share-content {
+            transform: translateY(0);
+        }
+        
+        .share-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .share-options {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .share-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 100px;
+        }
+        
+        .share-option:hover {
+            border-color: var(--secondary);
+            background-color: #f8f9fa;
+        }
+        
+        .share-icon {
+            font-size: 2rem;
+            color: var(--secondary);
+        }
+        
+        .share-link {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .share-link input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .share-link button {
+            padding: 0.8rem 1.2rem;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .share-link button:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background-color: var(--success);
+            color: white;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            z-index: 1001;
+            transform: translateX(100%);
+            transition: transform 0.3s;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.error {
+            background-color: var(--accent);
+        }
+        
+        /* Page Content */
+        .page-content {
+            display: none;
+        }
+        
+        .page-content.active {
+            display: block;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+            color: white;
+        }
+        
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--secondary);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-column ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--secondary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-link {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-link:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #444;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 99;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin: 1rem 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0.5rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .product-actions {
+                flex-direction: column;
+            }
+            
+            .header-actions {
+                margin-top: 1rem;
+            }
+            
+            .product-detail {
+                flex-direction: column;
+            }
+            
+            .product-detail-image, .product-detail-info {
+                flex: none;
+            }
+            
+            .product-detail-title {
+                font-size: 2rem;
+            }
+            
+            .product-detail-price {
+                font-size: 2rem;
+            }
+            
+            .product-detail-actions {
+                flex-direction: column;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo" data-page="home">
+                    <i class="fas fa-desktop"></i>
+                    PC<span>Master</span>
+                </a>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="nav-link active" data-page="home">Главная</a></li>
+                        <li><a href="#" class="nav-link" data-page="gaming">Игровые ПК</a></li>
+                        <li><a href="#" class="nav-link" data-page="office">Офисные ПК</a></li>
+                        <li><a href="#" class="nav-link" data-page="components">Комплектующие</a></li>
+                        <li><a href="#" class="nav-link" data-page="cart">Корзина</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <div class="compare-icon" id="compareBtn">
+                        <i class="fas fa-balance-scale"></i>
+                        <span class="compare-count">0</span>
+                    </div>
+                    <div class="cart-icon" data-page="cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </div>
+                    <button class="btn" id="authBtn">
+                        <i class="fas fa-user"></i>
+                        Войти
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
 
-Магазин игровых и офисных компьютеров, комплектующих и мониторов.
+    <!-- Main Content -->
+    <main>
+        <!-- Home Page -->
+        <section class="page-content active" id="homePage">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="container">
+                    <div class="hero-content">
+                        <h1>PC Master - Собери свой идеальный компьютер</h1>
+                        <p>Профессиональная сборка ПК, игровые компьютеры и комплектующие с гарантией качества</p>
+                        <div class="hero-buttons">
+                            <a href="#" class="btn btn-accent" data-page="gaming">
+                                <i class="fas fa-gamepad"></i>
+                                Игровые ПК
+                            </a>
+                            <a href="#" class="btn" data-page="components">
+                                <i class="fas fa-microchip"></i>
+                                Комплектующие
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-## Функциональность
+            <!-- Search -->
+            <section>
+                <div class="container">
+                    <div class="search-container">
+                        <input type="text" class="search-bar" id="searchBar" placeholder="Поиск товаров...">
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                </div>
+            </section>
 
-- Просмотр товаров по категориям
-- Поиск и фильтрация
-- Корзина покупок
-- Сравнение товаров
-- Детальные страницы товаров
+            <!-- Categories -->
+            <section>
+                <div class="container">
+                    <h2 class="section-title">Категории товаров</h2>
+                    <div class="categories">
+                        <div class="category-card" data-page="gaming">
+                            <div class="category-icon">🎮</div>
+                            <h3>Игровые ПК</h3>
+                            <p>Мощные компьютеры для гейминга</p>
+                        </div>
+                        <div class="category-card" data-page="office">
+                            <div class="category-icon">💼</div>
+                            <h3>Офисные ПК</h3>
+                            <p>Надежные решения для работы</p>
+                        </div>
+                        <div class="category-card" data-page="components">
+                            <div class="category-icon">⚙️</div>
+                            <h3>Комплектующие</h3>
+                            <p>Процессоры, видеокарты, ОЗУ</p>
+                        </div>
+                        <div class="category-card" data-page="components">
+                            <div class="category-icon">🖥️</div>
+                            <h3>Мониторы</h3>
+                            <p>Игровые и профессиональные</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products -->
+            <section>
+                <div class="container">
+                    <h2 class="section-title">Популярные товары</h2>
+                    <div class="products" id="featuredProducts">
+                        <!-- Featured products loaded by JS -->
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Gaming PCs Page -->
+        <section class="page-content" id="gamingPage">
+            <div class="container">
+                <h2 class="section-title">Игровые компьютеры</h2>
+                <p style="text-align: center; margin-bottom: 2rem;">Мощные решения для гейминга</p>
+                
+                <div class="search-container">
+                    <input type="text" class="search-bar" id="gamingSearch" placeholder="Поиск игровых ПК...">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+                
+                <div class="filters">
+                    <div class="filter-group">
+                        <select id="gamingPriceFilter">
+                            <option value="">Любая цена</option>
+                            <option value="0-50000">До 50,000 ₽</option>
+                            <option value="50000-100000">50,000 - 100,000 ₽</option>
+                            <option value="100000-200000">100,000 - 200,000 ₽</option>
+                            <option value="200000+">От 200,000 ₽</option>
+                        </select>
+                        <select id="gamingBrandFilter">
+                            <option value="">Все бренды</option>
+                            <option value="asus">ASUS</option>
+                            <option value="msi">MSI</option>
+                            <option value="hp">HP</option>
+                            <option value="lenovo">Lenovo</option>
+                        </select>
+                        <select id="gamingSort">
+                            <option value="name">По названию</option>
+                            <option value="price">По цене (возр.)</option>
+                            <option value="price-desc">По цене (убыв.)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="products" id="gamingProducts">
+                    <!-- Gaming PCs loaded by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Office PCs Page -->
+        <section class="page-content" id="officePage">
+            <div class="container">
+                <h2 class="section-title">Офисные компьютеры</h2>
+                <p style="text-align: center; margin-bottom: 2rem;">Надежные решения для работы</p>
+                
+                <div class="search-container">
+                    <input type="text" class="search-bar" id="officeSearch" placeholder="Поиск офисных ПК...">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+                
+                <div class="filters">
+                    <div class="filter-group">
+                        <select id="officePriceFilter">
+                            <option value="">Любая цена</option>
+                            <option value="0-30000">До 30,000 ₽</option>
+                            <option value="30000-60000">30,000 - 60,000 ₽</option>
+                            <option value="60000+">От 60,000 ₽</option>
+                        </select>
+                        <select id="officeSort">
+                            <option value="name">По названию</option>
+                            <option value="price">По цене (возр.)</option>
+                            <option value="price-desc">По цене (убыв.)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="products" id="officeProducts">
+                    <!-- Office PCs loaded by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Components Page -->
+        <section class="page-content" id="componentsPage">
+            <div class="container">
+                <h2 class="section-title">Комплектующие</h2>
+                <p style="text-align: center; margin-bottom: 2rem;">Все для сборки вашего ПК</p>
+                
+                <div class="search-container">
+                    <input type="text" class="search-bar" id="componentsSearch" placeholder="Поиск комплектующих...">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+                
+                <div class="filters">
+                    <div class="filter-group">
+                        <select id="componentTypeFilter">
+                            <option value="">Все категории</option>
+                            <option value="cpu">Процессоры</option>
+                            <option value="gpu">Видеокарты</option>
+                            <option value="ram">Оперативная память</option>
+                            <option value="storage">Накопители</option>
+                            <option value="motherboard">Материнские платы</option>
+                            <option value="psu">Блоки питания</option>
+                            <option value="cooling">Охлаждение</option>
+                            <option value="case">Корпуса</option>
+                        </select>
+                        <select id="componentBrandFilter">
+                            <option value="">Все бренды</option>
+                            <option value="intel">Intel</option>
+                            <option value="amd">AMD</option>
+                            <option value="nvidia">NVIDIA</option>
+                            <option value="asus">ASUS</option>
+                            <option value="msi">MSI</option>
+                            <option value="gigabyte">Gigabyte</option>
+                            <option value="corsair">Corsair</option>
+                            <option value="kingston">Kingston</option>
+                        </select>
+                        <select id="componentSort">
+                            <option value="name">По названию</option>
+                            <option value="price">По цене (возр.)</option>
+                            <option value="price-desc">По цене (убыв.)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="products" id="componentsProducts">
+                    <!-- Components loaded by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Detail Page -->
+        <section class="page-content" id="productDetailPage">
+            <div class="container">
+                <div class="product-detail" id="productDetailContent">
+                    <!-- Product details loaded by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Cart Page -->
+        <section class="page-content" id="cartPage">
+            <div class="container">
+                <h2 class="section-title">Корзина покупок</h2>
+                <p style="text-align: center; margin-bottom: 2rem;">Ваши выбранные товары</p>
+                <div class="cart-actions" style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem;">
+                    <button class="btn btn-success" id="shareCartBtn">
+                        <i class="fas fa-share-alt"></i>
+                        Поделиться корзиной
+                    </button>
+                    <button class="btn btn-outline" id="clearCartBtn">
+                        <i class="fas fa-trash"></i>
+                        Очистить корзину
+                    </button>
+                </div>
+                <div class="products" id="cartItems">
+                    <!-- Cart items loaded by JS -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>PC Master</h3>
+                    <p>Профессиональная сборка компьютеров с 2010 года. Гарантия качества и лучшие цены.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-vk"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Категории</h4>
+                    <ul>
+                        <li><a href="#" data-page="gaming"><i class="fas fa-chevron-right"></i> Игровые ПК</a></li>
+                        <li><a href="#" data-page="office"><i class="fas fa-chevron-right"></i> Офисные ПК</a></li>
+                        <li><a href="#" data-page="components"><i class="fas fa-chevron-right"></i> Комплектующие</a></li>
+                        <li><a href="#" data-page="components"><i class="fas fa-chevron-right"></i> Мониторы</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Помощь</h4>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Доставка и оплата</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Гарантия</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Возврат товара</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Контакты</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Контакты</h4>
+                    <ul>
+                        <li><a href="tel:+79991234567"><i class="fas fa-phone"></i> +7 (999) 123-45-67</a></li>
+                        <li><a href="mailto:info@pcmaster.ru"><i class="fas fa-envelope"></i> info@pcmaster.ru</a></li>
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> Москва, ул. Компьютерная, 15</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2024 PC Master. Все права защищены.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-content">
+            <div class="auth-header">
+                <h3>Вход в аккаунт</h3>
+                <button class="close-auth" id="closeAuth">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Вход</button>
+                <button class="auth-tab" data-tab="register">Регистрация</button>
+            </div>
+            <form class="auth-form active" id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email, телефон или логин</label>
+                    <input type="text" id="loginEmail" placeholder="Введите ваши данные" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Пароль</label>
+                    <input type="password" id="loginPassword" placeholder="Введите пароль" required>
+                </div>
+                <button type="submit" class="btn btn-accent" style="width: 100%;">Войти</button>
+                <div class="auth-footer">
+                    <p>Нет аккаунта? <a href="#" id="switchToRegister">Зарегистрируйтесь</a></p>
+                </div>
+            </form>
+            <form class="auth-form" id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Имя</label>
+                    <input type="text" id="registerName" placeholder="Введите ваше имя" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" placeholder="Введите email" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPhone">Телефон</label>
+                    <input type="tel" id="registerPhone" placeholder="+7 (999) 123-45-67" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Пароль</label>
+                    <input type="password" id="registerPassword" placeholder="Придумайте пароль" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerConfirmPassword">Подтвердите пароль</label>
+                    <input type="password" id="registerConfirmPassword" placeholder="Повторите пароль" required>
+                </div>
+                <button type="submit" class="btn btn-accent" style="width: 100%;">Зарегистрироваться</button>
+                <div class="auth-footer">
+                    <p>Уже есть аккаунт? <a href="#" id="switchToLogin">Войдите</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Compare Modal -->
+    <div class="compare-modal" id="compareModal">
+        <div class="compare-content">
+            <div class="compare-header">
+                <h2>Сравнение товаров</h2>
+                <button class="close-compare" id="closeCompare">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="compareContent">
+                <!-- Compare content loaded by JS -->
+            </div>
+            
+            <div class="compare-actions">
+                <button class="btn btn-outline" id="clearCompare">
+                    <i class="fas fa-trash"></i>
+                    Очистить список
+                </button>
+                <button class="btn" id="closeCompareBtn">
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div class="share-modal" id="shareModal">
+        <div class="share-content">
+            <div class="share-header">
+                <h3>Поделиться</h3>
+                <button class="close-auth" id="closeShare">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="share-options">
+                <div class="share-option" data-platform="vk">
+                    <div class="share-icon">
+                        <i class="fab fa-vk"></i>
+                    </div>
+                    <span>ВКонтакте</span>
+                </div>
+                <div class="share-option" data-platform="telegram">
+                    <div class="share-icon">
+                        <i class="fab fa-telegram"></i>
+                    </div>
+                    <span>Telegram</span>
+                </div>
+                <div class="share-option" data-platform="whatsapp">
+                    <div class="share-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <span>WhatsApp</span>
+                </div>
+                <div class="share-option" data-platform="copy">
+                    <div class="share-icon">
+                        <i class="fas fa-copy"></i>
+                    </div>
+                    <span>Скопировать</span>
+                </div>
+            </div>
+            <div class="share-link">
+                <input type="text" id="shareUrl" readonly>
+                <button id="copyShareUrl">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <!-- Back to top button -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+
+    <script>
+        // Расширенные данные товаров
+        const products = {
+            featured: [
+                {
+                    id: 1,
+                    name: "Gaming PC Pro RTX 4070",
+                    price: 125990,
+                    category: "gaming",
+                    image: "🎮",
+                    description: "Мощный игровой компьютер с RTX 4070 и Ryzen 7 7800X3D для комфортного гейминга в 4K разрешении",
+                    specs: {
+                        "Процессор": "AMD Ryzen 7 7800X3D",
+                        "Видеокарта": "NVIDIA GeForce RTX 4070 12GB",
+                        "Оперативная память": "32GB DDR5 5600MHz",
+                        "Накопитель": "1TB NVMe SSD",
+                        "Блок питания": "750W 80+ Gold",
+                        "Охлаждение": "Жидкостное охлаждение"
+                    },
+                    badge: "Хит продаж",
+                    brand: "asus"
+                },
+                {
+                    id: 2,
+                    name: "Office Master i5",
+                    price: 45990,
+                    category: "office",
+                    image: "💻",
+                    description: "Надежный офисный компьютер для продуктивной работы с современным дизайном",
+                    specs: {
+                        "Процессор": "Intel Core i5-13400",
+                        "Видеокарта": "Intel UHD Graphics 730",
+                        "Оперативная память": "16GB DDR4 3200MHz",
+                        "Накопитель": "512GB NVMe SSD",
+                        "Блок питания": "500W 80+ Bronze",
+                        "Охлаждение": "Воздушное охлаждение"
+                    },
+                    badge: "Эконом",
+                    brand: "lenovo"
+                },
+                {
+                    id: 3,
+                    name: "ASUS TUF Gaming Monitor",
+                    price: 34990,
+                    category: "monitors",
+                    image: "🖥️",
+                    description: "27-дюймовый игровой монитор 165Hz с технологией AMD FreeSync",
+                    specs: {
+                        "Диагональ": "27 дюймов",
+                        "Разрешение": "2560x1440 (WQHD)",
+                        "Частота обновления": "165Hz",
+                        "Время отклика": "1ms",
+                        "Технология": "AMD FreeSync Premium",
+                        "Порты": "HDMI, DisplayPort, USB-C"
+                    },
+                    badge: "Игровой",
+                    brand: "asus"
+                },
+                {
+                    id: 4,
+                    name: "NVIDIA RTX 4080",
+                    price: 89990,
+                    category: "components",
+                    type: "gpu",
+                    image: "⚡",
+                    description: "Мощная видеокарта для игр 4K с поддержкой DLSS 3 и трассировки лучей",
+                    specs: {
+                        "Графический процессор": "NVIDIA Ada Lovelace",
+                        "Видеопамять": "16GB GDDR6X",
+                        "Тактовая частота": "2205 MHz (Boost)",
+                        "Интерфейс": "PCIe 4.0",
+                        "Рекомендуемый БП": "750W",
+                        "Технологии": "DLSS 3, Ray Tracing"
+                    },
+                    badge: "Флагман",
+                    brand: "nvidia"
+                },
+                {
+                    id: 5,
+                    name: "Gaming PC Extreme RTX 4090",
+                    price: 299990,
+                    category: "gaming",
+                    image: "🚀",
+                    description: "Экстремальная производительность для профессионального гейминга и стриминга",
+                    specs: {
+                        "Процессор": "Intel Core i9-14900K",
+                        "Видеокарта": "NVIDIA GeForce RTX 4090 24GB",
+                        "Оперативная память": "64GB DDR5 6000MHz",
+                        "Накопитель": "2TB NVMe SSD + 4TB HDD",
+                        "Блок питания": "1200W 80+ Platinum",
+                        "Охлаждение": "Кастомная жидкостная система"
+                    },
+                    badge: "Экстрим",
+                    brand: "msi"
+                },
+                {
+                    id: 6,
+                    name: "Samsung Odyssey G9",
+                    price: 89990,
+                    category: "monitors",
+                    image: "🖥️",
+                    description: "49-дюймовый изогнутый игровой монитор с разрешением 5120x1440",
+                    specs: {
+                        "Диагональ": "49 дюймов",
+                        "Разрешение": "5120x1440 (Dual QHD)",
+                        "Частота обновления": "240Hz",
+                        "Время отклика": "1ms",
+                        "Технология": "G-Sync Compatible",
+                        "Кривизна": "1000R"
+                    },
+                    badge: "Ультра-wide",
+                    brand: "samsung"
+                }
+            ],
+            gaming: [
+                {
+                    id: 101,
+                    name: "Gaming Beast RTX 4090",
+                    price: 249990,
+                    category: "gaming",
+                    image: "🎮",
+                    description: "Экстремальная производительность для 4K гейминга и профессиональной работы",
+                    specs: {
+                        "Процессор": "Intel Core i9-13900K",
+                        "Видеокарта": "NVIDIA GeForce RTX 4090 24GB",
+                        "Оперативная память": "64GB DDR5 6000MHz",
+                        "Накопитель": "2TB NVMe SSD + 4TB HDD",
+                        "Блок питания": "1000W 80+ Platinum",
+                        "Охлаждение": "Кастомная жидкостная система"
+                    },
+                    badge: "Топ",
+                    brand: "msi"
+                },
+                {
+                    id: 102,
+                    name: "Streaming PC RTX 4060",
+                    price: 89990,
+                    category: "gaming",
+                    image: "🎥",
+                    description: "Идеальный ПК для стриминга и контент-мейкеров с отличным соотношением цены и качества",
+                    specs: {
+                        "Процессор": "AMD Ryzen 7 7700X",
+                        "Видеокарта": "NVIDIA GeForce RTX 4060 8GB",
+                        "Оперативная память": "32GB DDR5 5200MHz",
+                        "Накопитель": "1TB NVMe SSD",
+                        "Блок питания": "650W 80+ Gold",
+                        "Охлаждение": "Воздушное охлаждение"
+                    },
+                    badge: "Для стриминга",
+                    brand: "asus"
+                },
+                {
+                    id: 103,
+                    name: "Gaming RGB Pro",
+                    price: 129990,
+                    category: "gaming",
+                    image: "🌈",
+                    description: "Стильный игровой ПК с подсветкой ARGB и прозрачным корпусом",
+                    specs: {
+                        "Процессор": "AMD Ryzen 7 7800X3D",
+                        "Видеокарта": "NVIDIA GeForce RTX 4070 Ti 12GB",
+                        "Оперативная память": "32GB DDR5 5600MHz RGB",
+                        "Накопитель": "2TB NVMe SSD",
+                        "Блок питания": "850W 80+ Gold",
+                        "Охлаждение": "Жидкостное охлаждение с RGB"
+                    },
+                    badge: "RGB",
+                    brand: "corsair"
+                },
+                {
+                    id: 104,
+                    name: "Compact Gaming PC",
+                    price: 75990,
+                    category: "gaming",
+                    image: "💻",
+                    description: "Компактный игровой ПК без компромиссов в производительности",
+                    specs: {
+                        "Процессор": "Intel Core i5-13600K",
+                        "Видеокарта": "NVIDIA GeForce RTX 4060 Ti 8GB",
+                        "Оперативная память": "16GB DDR5 5200MHz",
+                        "Накопитель": "1TB NVMe SSD",
+                        "Блок питания": "600W 80+ Bronze",
+                        "Охлаждение": "Компактная система охлаждения"
+                    },
+                    badge: "Компактный",
+                    brand: "asus"
+                },
+                {
+                    id: 105,
+                    name: "Budget Gaming PC",
+                    price: 54990,
+                    category: "gaming",
+                    image: "💰",
+                    description: "Доступный игровой ПК для начинающих геймеров",
+                    specs: {
+                        "Процессор": "AMD Ryzen 5 7600",
+                        "Видеокарта": "AMD Radeon RX 7600 8GB",
+                        "Оперативная память": "16GB DDR5 4800MHz",
+                        "Накопитель": "512GB NVMe SSD",
+                        "Блок питания": "550W 80+ Bronze",
+                        "Охлаждение": "Стандартное охлаждение"
+                    },
+                    badge: "Бюджет",
+                    brand: "msi"
+                },
+                {
+                    id: 106,
+                    name: "Gaming Workstation",
+                    price: 189990,
+                    category: "gaming",
+                    image: "⚙️",
+                    description: "Мощная рабочая станция для гейминга и профессиональных задач",
+                    specs: {
+                        "Процессор": "AMD Ryzen 9 7950X",
+                        "Видеокарта": "NVIDIA GeForce RTX 4080 16GB",
+                        "Оперативная память": "64GB DDR5 6000MHz",
+                        "Накопитель": "2TB NVMe SSD + 2TB HDD",
+                        "Блок питания": "1000W 80+ Platinum",
+                        "Охлаждение": "Профессиональная система охлаждения"
+                    },
+                    badge: "Профи",
+                    brand: "hp"
+                }
+            ],
+            office: [
+                {
+                    id: 201,
+                    name: "Office Pro i7",
+                    price: 78990,
+                    category: "office",
+                    image: "💼",
+                    description: "Мощная рабочая станция для профессионалов с поддержкой многозадачности",
+                    specs: {
+                        "Процессор": "Intel Core i7-13700",
+                        "Видеокарта": "NVIDIA T1000 4GB",
+                        "Оперативная память": "32GB DDR4 3600MHz",
+                        "Накопитель": "1TB NVMe SSD",
+                        "Блок питания": "600W 80+ Bronze",
+                        "Охлаждение": "Тихая система охлаждения"
+                    },
+                    badge: "Профи",
+                    brand: "hp"
+                },
+                {
+                    id: 202,
+                    name: "Compact Office PC",
+                    price: 32990,
+                    category: "office",
+                    image: "🖥️",
+                    description: "Компактный ПК для экономии пространства без компромиссов в производительности",
+                    specs: {
+                        "Процессор": "Intel Core i3-13100",
+                        "Видеокарта": "Intel UHD Graphics 730",
+                        "Оперативная память": "8GB DDR4 3200MHz",
+                        "Накопитель": "256GB NVMe SSD",
+                        "Блок питания": "300W 80+",
+                        "Охлаждение": "Пассивное охлаждение"
+                    },
+                    badge: "Компактный",
+                    brand: "lenovo"
+                },
+                {
+                    id: 203,
+                    name: "Office All-in-One",
+                    price: 99990,
+                    category: "office",
+                    image: "🖥️",
+                    description: "Элегантный моноблок для современного офиса",
+                    specs: {
+                        "Процессор": "Intel Core i5-13400",
+                        "Видеокарта": "Intel Iris Xe Graphics",
+                        "Оперативная память": "16GB DDR4",
+                        "Накопитель": "512GB SSD",
+                        "Экран": "27 дюймов Full HD",
+                        "Веб-камера": "1080p с шторкой"
+                    },
+                    badge: "Моноблок",
+                    brand: "dell"
+                },
+                {
+                    id: 204,
+                    name: "Office Workstation",
+                    price: 129990,
+                    category: "office",
+                    image: "💻",
+                    description: "Профессиональная рабочая станция для сложных вычислений",
+                    specs: {
+                        "Процессор": "Intel Xeon W5-2465X",
+                        "Видеокарта": "NVIDIA RTX A2000 12GB",
+                        "Оперативная память": "64GB ECC DDR5",
+                        "Накопитель": "1TB NVMe SSD + 2TB HDD",
+                        "Блок питания": "800W 80+ Platinum",
+                        "Охлаждение": "Профессиональное охлаждение"
+                    },
+                    badge: "Рабочая станция",
+                    brand: "hp"
+                },
+                {
+                    id: 205,
+                    name: "Home Office PC",
+                    price: 45990,
+                    category: "office",
+                    image: "🏠",
+                    description: "Идеальный ПК для работы из дома",
+                    specs: {
+                        "Процессор": "AMD Ryzen 5 7600",
+                        "Видеокарта": "AMD Radeon Graphics",
+                        "Оперативная память": "16GB DDR5",
+                        "Накопитель": "512GB NVMe SSD",
+                        "Блок питания": "500W 80+ Bronze",
+                        "Охлаждение": "Тихая система охлаждения"
+                    },
+                    badge: "Для дома",
+                    brand: "asus"
+                },
+                {
+                    id: 206,
+                    name: "Office Mini PC",
+                    price: 28990,
+                    category: "office",
+                    image: "📦",
+                    description: "Ультракомпактный ПК для ограниченного пространства",
+                    specs: {
+                        "Процессор": "Intel Core i3-N305",
+                        "Видеокарта": "Intel UHD Graphics",
+                        "Оперативная память": "8GB LPDDR5",
+                        "Накопитель": "256GB NVMe SSD",
+                        "Размеры": "117 x 112 x 38 мм",
+                        "Порты": "2x Thunderbolt 4, 2x USB 3.2"
+                    },
+                    badge: "Мини ПК",
+                    brand: "intel"
+                }
+            ],
+            components: [
+                {
+                    id: 301,
+                    name: "Intel Core i9-13900K",
+                    price: 64990,
+                    category: "components",
+                    type: "cpu",
+                    image: "⚡",
+                    description: "Мощный процессор для игр и работы с 24 ядрами и технологией Intel Thermal Velocity Boost",
+                    specs: {
+                        "Количество ядер": "24 (8P + 16E)",
+                        "Количество потоков": "32",
+                        "Базовая частота": "3.0 GHz",
+                        "Максимальная частота": "5.8 GHz",
+                        "Кэш L3": "36MB",
+                        "Сокет": "LGA 1700"
+                    },
+                    badge: "Флагман",
+                    brand: "intel"
+                },
+                {
+                    id: 302,
+                    name: "NVIDIA RTX 4070 Ti",
+                    price: 75990,
+                    category: "components",
+                    type: "gpu",
+                    image: "🎮",
+                    description: "Идеальный баланс цены и производительности для игр в 1440p и 4K",
+                    specs: {
+                        "Графический процессор": "NVIDIA Ada Lovelace",
+                        "Видеопамять": "12GB GDDR6X",
+                        "Тактовая частота": "2310 MHz (Boost)",
+                        "Интерфейс": "PCIe 4.0",
+                        "Рекомендуемый БП": "700W",
+                        "Технологии": "DLSS 3, Ray Tracing"
+                    },
+                    badge: "Выбор",
+                    brand: "nvidia"
+                },
+                {
+                    id: 303,
+                    name: "AMD Ryzen 7 7800X3D",
+                    price: 42990,
+                    category: "components",
+                    type: "cpu",
+                    image: "⚡",
+                    description: "Лучший игровой процессор с технологией 3D V-Cache для максимального FPS",
+                    specs: {
+                        "Количество ядер": "8",
+                        "Количество потоков": "16",
+                        "Базовая частота": "4.2 GHz",
+                        "Максимальная частота": "5.0 GHz",
+                        "Кэш L3": "96MB (с 3D V-Cache)",
+                        "Сокет": "AM5"
+                    },
+                    badge: "Игровой",
+                    brand: "amd"
+                },
+                {
+                    id: 304,
+                    name: "Kingston Fury Beast 32GB",
+                    price: 8990,
+                    category: "components",
+                    type: "ram",
+                    image: "💾",
+                    description: "Высокоскоростная оперативная память для игр и разгона",
+                    specs: {
+                        "Объем": "32GB (2x16GB)",
+                        "Тип": "DDR5",
+                        "Частота": "5600MHz",
+                        "Тайминги": "CL36",
+                        "Напряжение": "1.25V",
+                        "Охлаждение": "Алюминиевый радиатор"
+                    },
+                    badge: "Игровая",
+                    brand: "kingston"
+                },
+                {
+                    id: 305,
+                    name: "Samsung 990 Pro 2TB",
+                    price: 18990,
+                    category: "components",
+                    type: "storage",
+                    image: "💿",
+                    description: "Скоростной SSD накопитель нового поколения для игр и профессиональных задач",
+                    specs: {
+                        "Объем": "2TB",
+                        "Интерфейс": "PCIe 4.0 NVMe",
+                        "Скорость чтения": "7450 MB/s",
+                        "Скорость записи": "6900 MB/s",
+                        "Ресурс записи": "1200 TBW",
+                        "Гарантия": "5 лет"
+                    },
+                    badge: "Скоростной",
+                    brand: "samsung"
+                },
+                {
+                    id: 306,
+                    name: "ASUS ROG Strix B650-E",
+                    price: 28990,
+                    category: "components",
+                    type: "motherboard",
+                    image: "🔌",
+                    description: "Игровая материнская плата для процессоров AMD Ryzen 7000",
+                    specs: {
+                        "Сокет": "AM5",
+                        "Чипсет": "AMD B650",
+                        "Память": "4x DDR5 до 6400MHz",
+                        "Слоты PCIe": "PCIe 5.0 x16",
+                        "Порты SATA": "4x SATA 6Gb/s",
+                        "Сеть": "2.5G Ethernet + Wi-Fi 6E"
+                    },
+                    badge: "Игровая",
+                    brand: "asus"
+                },
+                {
+                    id: 307,
+                    name: "Corsair RM850x",
+                    price: 14990,
+                    category: "components",
+                    type: "psu",
+                    image: "🔋",
+                    description: "Надежный блок питания с сертификатом 80 Plus Gold",
+                    specs: {
+                        "Мощность": "850W",
+                        "Сертификат": "80 Plus Gold",
+                        "Разъемы": "1x 24-pin, 2x CPU, 6x PCIe",
+                        "Вентилятор": "135mm Fluid Dynamic Bearing",
+                        "Гарантия": "10 лет",
+                        "Кабели": "Полностью модульные"
+                    },
+                    badge: "Надежный",
+                    brand: "corsair"
+                },
+                {
+                    id: 308,
+                    name: "Noctua NH-D15",
+                    price: 8990,
+                    category: "components",
+                    type: "cooling",
+                    image: "❄️",
+                    description: "Легендарный кулер для процессора с отличным соотношением шума и производительности",
+                    specs: {
+                        "Тип": "Башенный воздушный",
+                        "Рассеиваемая мощность": "220W",
+                        "Вентиляторы": "2x NF-A15 PWM",
+                        "Высота": "165mm",
+                        "Совместимость": "Intel LGA1700, AMD AM5",
+                        "Уровень шума": "19.2-24.6 dB(A)"
+                    },
+                    badge: "Тихий",
+                    brand: "noctua"
+                },
+                {
+                    id: 309,
+                    name: "Lian Li O11 Dynamic",
+                    price: 12990,
+                    category: "components",
+                    type: "case",
+                    image: "📦",
+                    description: "Популярный корпус с панорамным стеклом и отличной системой вентиляции",
+                    specs: {
+                        "Тип": "Midi-Tower",
+                        "Материал": "Сталь, стекло",
+                        "Совместимость": "ATX, Micro-ATX, Mini-ITX",
+                        "Слоты расширения": "7",
+                        "Отсеки для дисков": "2x 2.5\", 2x 3.5\"",
+                        "Вентиляторы": "Поддержка до 9x 120mm"
+                    },
+                    badge: "Популярный",
+                    brand: "lianli"
+                },
+                {
+                    id: 310,
+                    name: "AMD Radeon RX 7900 XTX",
+                    price: 99990,
+                    category: "components",
+                    type: "gpu",
+                    image: "🎮",
+                    description: "Флагманская видеокарта AMD с архитектурой RDNA 3",
+                    specs: {
+                        "Графический процессор": "AMD RDNA 3",
+                        "Видеопамять": "24GB GDDR6",
+                        "Тактовая частота": "2300 MHz (Game)",
+                        "Интерфейс": "PCIe 4.0",
+                        "Рекомендуемый БП": "800W",
+                        "Технологии": "FSR 3, Ray Tracing"
+                    },
+                    badge: "Флагман",
+                    brand: "amd"
+                },
+                {
+                    id: 311,
+                    name: "Intel Core i5-13600K",
+                    price: 28990,
+                    category: "components",
+                    type: "cpu",
+                    image: "⚡",
+                    description: "Отличный процессор для игр и работы с 14 ядрами",
+                    specs: {
+                        "Количество ядер": "14 (6P + 8E)",
+                        "Количество потоков": "20",
+                        "Базовая частота": "3.5 GHz",
+                        "Максимальная частота": "5.1 GHz",
+                        "Кэш L3": "24MB",
+                        "Сокет": "LGA 1700"
+                    },
+                    badge: "Баланс",
+                    brand: "intel"
+                },
+                {
+                    id: 312,
+                    name: "G.Skill Trident Z5 RGB 32GB",
+                    price: 12990,
+                    category: "components",
+                    type: "ram",
+                    image: "💾",
+                    description: "Оперативная память с подсветкой RGB для игровых систем",
+                    specs: {
+                        "Объем": "32GB (2x16GB)",
+                        "Тип": "DDR5",
+                        "Частота": "6000MHz",
+                        "Тайминги": "CL30",
+                        "Напряжение": "1.35V",
+                        "Подсветка": "RGB"
+                    },
+                    badge: "RGB",
+                    brand: "gskill"
+                }
+            ]
+        };
+
+        // Основной класс приложения
+        class PCMaster {
+            constructor() {
+                this.cart = JSON.parse(localStorage.getItem('cart')) || [];
+                this.compare = JSON.parse(localStorage.getItem('compare')) || [];
+                this.currentPage = 'home';
+                this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.updateCartCount();
+                this.updateCompareCount();
+                this.displayFeaturedProducts();
+                this.updateUserUI();
+            }
+
+            setupEventListeners() {
+                // Навигация
+                document.querySelectorAll('[data-page]').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const page = e.target.closest('[data-page]').dataset.page;
+                        this.showPage(page);
+                    });
+                });
+
+                // Авторизация
+                document.getElementById('authBtn').addEventListener('click', () => {
+                    this.showAuthModal();
+                });
+
+                document.getElementById('closeAuth').addEventListener('click', () => {
+                    this.hideAuthModal();
+                });
+
+                // Сравнение товаров
+                document.getElementById('compareBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.showCompareModal();
+                });
+
+                document.getElementById('closeCompare').addEventListener('click', () => {
+                    this.hideCompareModal();
+                });
+
+                document.getElementById('closeCompareBtn').addEventListener('click', () => {
+                    this.hideCompareModal();
+                });
+
+                document.getElementById('clearCompare').addEventListener('click', () => {
+                    this.clearCompare();
+                });
+
+                // Поделиться
+                document.getElementById('shareCartBtn').addEventListener('click', () => {
+                    this.shareCart();
+                });
+
+                document.getElementById('clearCartBtn').addEventListener('click', () => {
+                    this.clearCart();
+                });
+
+                document.getElementById('closeShare').addEventListener('click', () => {
+                    this.hideShareModal();
+                });
+
+                document.getElementById('copyShareUrl').addEventListener('click', () => {
+                    this.copyShareUrl();
+                });
+
+                // Обработчики для кнопок поделиться
+                document.querySelectorAll('.share-option').forEach(option => {
+                    option.addEventListener('click', (e) => {
+                        const platform = e.currentTarget.dataset.platform;
+                        this.handleShare(platform);
+                    });
+                });
+
+                // Переключение между вкладками авторизации
+                document.querySelectorAll('.auth-tab').forEach(tab => {
+                    tab.addEventListener('click', (e) => {
+                        const tabName = e.target.dataset.tab;
+                        this.switchAuthTab(tabName);
+                    });
+                });
+
+                document.getElementById('switchToRegister').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.switchAuthTab('register');
+                });
+
+                document.getElementById('switchToLogin').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.switchAuthTab('login');
+                });
+
+                // Формы авторизации
+                document.getElementById('loginForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleLogin();
+                });
+
+                document.getElementById('registerForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleRegister();
+                });
+
+                // Поиск
+                document.getElementById('searchBar').addEventListener('input', (e) => {
+                    this.handleSearch(e.target.value, 'home');
+                });
+
+                document.getElementById('gamingSearch').addEventListener('input', (e) => {
+                    this.handleSearch(e.target.value, 'gaming');
+                });
+
+                document.getElementById('officeSearch').addEventListener('input', (e) => {
+                    this.handleSearch(e.target.value, 'office');
+                });
+
+                document.getElementById('componentsSearch').addEventListener('input', (e) => {
+                    this.handleSearch(e.target.value, 'components');
+                });
+
+                // Фильтры
+                this.setupFilters();
+                
+                // Кнопка "Наверх"
+                document.getElementById('backToTop').addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+                
+                // Показать кнопку "Наверх" при прокрутке
+                window.addEventListener('scroll', () => {
+                    const backToTop = document.getElementById('backToTop');
+                    if (window.pageYOffset > 300) {
+                        backToTop.classList.add('visible');
+                    } else {
+                        backToTop.classList.remove('visible');
+                    }
+                });
+            }
+
+            setupFilters() {
+                // Фильтры для игровых ПК
+                document.getElementById('gamingPriceFilter').addEventListener('change', () => {
+                    this.applyGamingFilters();
+                });
+                
+                document.getElementById('gamingBrandFilter').addEventListener('change', () => {
+                    this.applyGamingFilters();
+                });
+                
+                document.getElementById('gamingSort').addEventListener('change', () => {
+                    this.applyGamingFilters();
+                });
+                
+                // Фильтры для офисных ПК
+                document.getElementById('officePriceFilter').addEventListener('change', () => {
+                    this.applyOfficeFilters();
+                });
+                
+                document.getElementById('officeSort').addEventListener('change', () => {
+                    this.applyOfficeFilters();
+                });
+                
+                // Фильтры для комплектующих
+                document.getElementById('componentTypeFilter').addEventListener('change', () => {
+                    this.applyComponentsFilters();
+                });
+                
+                document.getElementById('componentBrandFilter').addEventListener('change', () => {
+                    this.applyComponentsFilters();
+                });
+                
+                document.getElementById('componentSort').addEventListener('change', () => {
+                    this.applyComponentsFilters();
+                });
+            }
+
+            applyGamingFilters() {
+                const priceFilter = document.getElementById('gamingPriceFilter').value;
+                const brandFilter = document.getElementById('gamingBrandFilter').value;
+                const sortFilter = document.getElementById('gamingSort').value;
+                
+                let allGamingProducts = [...products.featured.filter(p => p.category === 'gaming'), ...products.gaming];
+                
+                // Применяем фильтр по цене
+                if (priceFilter) {
+                    allGamingProducts = allGamingProducts.filter(product => {
+                        if (priceFilter === '0-50000') return product.price <= 50000;
+                        if (priceFilter === '50000-100000') return product.price >= 50000 && product.price <= 100000;
+                        if (priceFilter === '100000-200000') return product.price >= 100000 && product.price <= 200000;
+                        if (priceFilter === '200000+') return product.price >= 200000;
+                        return true;
+                    });
+                }
+                
+                // Применяем фильтр по бренду
+                if (brandFilter) {
+                    allGamingProducts = allGamingProducts.filter(product => product.brand === brandFilter);
+                }
+                
+                // Применяем сортировку
+                if (sortFilter === 'price') {
+                    allGamingProducts.sort((a, b) => a.price - b.price);
+                } else if (sortFilter === 'price-desc') {
+                    allGamingProducts.sort((a, b) => b.price - a.price);
+                } else if (sortFilter === 'name') {
+                    allGamingProducts.sort((a, b) => a.name.localeCompare(b.name));
+                }
+                
+                // Отображаем отфильтрованные товары
+                const container = document.getElementById('gamingProducts');
+                container.innerHTML = allGamingProducts.map(product => this.createProductCard(product)).join('');
+            }
+
+            applyOfficeFilters() {
+                const priceFilter = document.getElementById('officePriceFilter').value;
+                const sortFilter = document.getElementById('officeSort').value;
+                
+                let allOfficeProducts = [...products.featured.filter(p => p.category === 'office'), ...products.office];
+                
+                // Применяем фильтр по цене
+                if (priceFilter) {
+                    allOfficeProducts = allOfficeProducts.filter(product => {
+                        if (priceFilter === '0-30000') return product.price <= 30000;
+                        if (priceFilter === '30000-60000') return product.price >= 30000 && product.price <= 60000;
+                        if (priceFilter === '60000+') return product.price >= 60000;
+                        return true;
+                    });
+                }
+                
+                // Применяем сортировку
+                if (sortFilter === 'price') {
+                    allOfficeProducts.sort((a, b) => a.price - b.price);
+                } else if (sortFilter === 'price-desc') {
+                    allOfficeProducts.sort((a, b) => b.price - a.price);
+                } else if (sortFilter === 'name') {
+                    allOfficeProducts.sort((a, b) => a.name.localeCompare(b.name));
+                }
+                
+                // Отображаем отфильтрованные товары
+                const container = document.getElementById('officeProducts');
+                container.innerHTML = allOfficeProducts.map(product => this.createProductCard(product)).join('');
+            }
+
+            applyComponentsFilters() {
+                const typeFilter = document.getElementById('componentTypeFilter').value;
+                const brandFilter = document.getElementById('componentBrandFilter').value;
+                const sortFilter = document.getElementById('componentSort').value;
+                
+                let allComponentsProducts = [...products.featured.filter(p => p.category === 'components' || p.category === 'monitors'), ...products.components];
+                
+                // Применяем фильтр по типу
+                if (typeFilter) {
+                    allComponentsProducts = allComponentsProducts.filter(product => product.type === typeFilter);
+                }
+                
+                // Применяем фильтр по бренду
+                if (brandFilter) {
+                    allComponentsProducts = allComponentsProducts.filter(product => product.brand === brandFilter);
+                }
+                
+                // Применяем сортировку
+                if (sortFilter === 'price') {
+                    allComponentsProducts.sort((a, b) => a.price - b.price);
+                } else if (sortFilter === 'price-desc') {
+                    allComponentsProducts.sort((a, b) => b.price - a.price);
+                } else if (sortFilter === 'name') {
+                    allComponentsProducts.sort((a, b) => a.name.localeCompare(b.name));
+                }
+                
+                // Отображаем отфильтрованные товары
+                const container = document.getElementById('componentsProducts');
+                container.innerHTML = allComponentsProducts.map(product => this.createProductCard(product)).join('');
+            }
+
+            showPage(page) {
+                // Скрыть все страницы
+                document.querySelectorAll('.page-content').forEach(p => {
+                    p.classList.remove('active');
+                });
+
+                // Показать выбранную страницу
+                document.getElementById(page + 'Page').classList.add('active');
+
+                // Обновить навигацию
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.dataset.page === page) {
+                        link.classList.add('active');
+                    }
+                });
+
+                // Загрузить контент страницы
+                this.currentPage = page;
+                switch(page) {
+                    case 'home':
+                        this.displayFeaturedProducts();
+                        break;
+                    case 'gaming':
+                        this.displayGamingProducts();
+                        break;
+                    case 'office':
+                        this.displayOfficeProducts();
+                        break;
+                    case 'components':
+                        this.displayComponentsProducts();
+                        break;
+                    case 'cart':
+                        this.displayCart();
+                        break;
+                }
+
+                // Прокрутить к верху
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            displayFeaturedProducts() {
+                const container = document.getElementById('featuredProducts');
+                if (!container) return;
+
+                container.innerHTML = products.featured.map(product => this.createProductCard(product)).join('');
+            }
+
+            displayGamingProducts() {
+                const container = document.getElementById('gamingProducts');
+                if (!container) return;
+
+                const allGamingProducts = [...products.featured.filter(p => p.category === 'gaming'), ...products.gaming];
+                container.innerHTML = allGamingProducts.map(product => this.createProductCard(product)).join('');
+            }
+
+            displayOfficeProducts() {
+                const container = document.getElementById('officeProducts');
+                if (!container) return;
+
+                const allOfficeProducts = [...products.featured.filter(p => p.category === 'office'), ...products.office];
+                container.innerHTML = allOfficeProducts.map(product => this.createProductCard(product)).join('');
+            }
+
+            displayComponentsProducts() {
+                const container = document.getElementById('componentsProducts');
+                if (!container) return;
+
+                const allComponentsProducts = [...products.featured.filter(p => p.category === 'components' || p.category === 'monitors'), ...products.components];
+                container.innerHTML = allComponentsProducts.map(product => this.createProductCard(product)).join('');
+            }
+
+            createProductCard(product) {
+                const isInCompare = this.compare.some(item => item.id === product.id);
+                
+                return `
+                    <div class="product-card fade-in">
+                        ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
+                        <div class="product-image">
+                            <span>${product.image}</span>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">${product.name}</h3>
+                            <p class="product-description">${product.description}</p>
+                            <div class="product-price">${this.formatPrice(product.price)}</div>
+                            <div class="product-actions">
+                                <button class="btn btn-outline" onclick="pcmaster.showProductDetail(${product.id})">
+                                    <i class="fas fa-info-circle"></i>
+                                    Подробнее
+                                </button>
+                                <button class="btn ${isInCompare ? 'btn-accent' : 'btn-outline'}" onclick="pcmaster.toggleCompare(${product.id})">
+                                    <i class="fas fa-balance-scale"></i>
+                                    ${isInCompare ? 'В сравнении' : 'Сравнить'}
+                                </button>
+                                <button class="btn" onclick="pcmaster.addToCart(${product.id})">
+                                    <i class="fas fa-cart-plus"></i>
+                                    В корзину
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            displayCart() {
+                const container = document.getElementById('cartItems');
+                if (this.cart.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 3rem; color: #666; grid-column: 1 / -1;">
+                            <i class="fas fa-shopping-cart" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                            <h3 style="color: var(--dark); margin-bottom: 1rem;">Корзина пуста</h3>
+                            <p>Добавьте товары из каталога</p>
+                            <button class="btn" onclick="pcmaster.showPage('home')" style="margin-top: 1.5rem;">
+                                Перейти в каталог
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const totalPrice = this.cart.reduce((sum, item) => sum + item.price, 0);
+                
+                container.innerHTML = this.cart.map(item => `
+                    <div class="product-card">
+                        <div class="product-image">
+                            <span style="font-size: 4rem;">${item.image}</span>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">${item.name}</h3>
+                            <p class="product-description">${item.description}</p>
+                            <div class="product-price">${this.formatPrice(item.price)}</div>
+                            <div class="product-actions">
+                                <button class="btn btn-outline" onclick="pcmaster.shareProduct(${item.id})">
+                                    <i class="fas fa-share-alt"></i>
+                                    Поделиться
+                                </button>
+                                <button class="btn btn-accent" onclick="pcmaster.removeFromCart(${item.id})">
+                                    <i class="fas fa-trash"></i>
+                                    Удалить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('') + `
+                    <div class="product-card" style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+                        <h3 style="margin-bottom: 1rem;">Итого: ${this.formatPrice(totalPrice)}</h3>
+                        <button class="btn btn-accent" style="padding: 1rem 2rem; margin-bottom: 1rem;">
+                            <i class="fas fa-credit-card"></i>
+                            Оформить заказ
+                        </button>
+                    </div>
+                `;
+            }
+
+            showProductDetail(productId) {
+                const allProducts = [...products.featured, ...products.gaming, ...products.office, ...products.components];
+                const product = allProducts.find(p => p.id === productId);
+                
+                if (!product) return;
+
+                // Скрыть все страницы
+                document.querySelectorAll('.page-content').forEach(p => {
+                    p.classList.remove('active');
+                });
+
+                // Показать страницу деталей товара
+                document.getElementById('productDetailPage').classList.add('active');
+
+                // Заполнить детали товара
+                const container = document.getElementById('productDetailContent');
+                const isInCompare = this.compare.some(item => item.id === product.id);
+                const isInCart = this.cart.some(item => item.id === product.id);
+
+                container.innerHTML = `
+                    <div class="product-detail-image">
+                        <span>${product.image}</span>
+                    </div>
+                    <div class="product-detail-info">
+                        ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
+                        <h1 class="product-detail-title">${product.name}</h1>
+                        <div class="product-detail-price">${this.formatPrice(product.price)}</div>
+                        <p class="product-detail-description">${product.description}</p>
+                        
+                        <div class="product-specs">
+                            ${Object.entries(product.specs || {}).map(([key, value]) => `
+                                <div class="spec-item">
+                                    <span class="spec-name">${key}</span>
+                                    <span class="spec-value">${value}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="product-detail-actions">
+                            <button class="btn ${isInCompare ? 'btn-accent' : 'btn-outline'}" onclick="pcmaster.toggleCompare(${product.id})">
+                                <i class="fas fa-balance-scale"></i>
+                                ${isInCompare ? 'В сравнении' : 'Сравнить'}
+                            </button>
+                            <button class="btn ${isInCart ? 'btn-accent' : ''}" onclick="pcmaster.addToCart(${product.id})">
+                                <i class="fas fa-cart-plus"></i>
+                                ${isInCart ? 'В корзине' : 'В корзину'}
+                            </button>
+                            <button class="btn btn-success" onclick="pcmaster.shareProduct(${product.id})">
+                                <i class="fas fa-share-alt"></i>
+                                Поделиться
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            addToCart(productId) {
+                const allProducts = [...products.featured, ...products.gaming, ...products.office, ...products.components];
+                const product = allProducts.find(p => p.id === productId);
+                
+                if (!product) return;
+
+                this.cart.push(product);
+                this.saveCart();
+                this.updateCartCount();
+                this.showNotification('Товар добавлен в корзину');
+                
+                if (this.currentPage === 'cart') {
+                    this.displayCart();
+                } else if (this.currentPage === 'productDetail') {
+                    this.showProductDetail(productId);
+                }
+            }
+
+            removeFromCart(productId) {
+                this.cart = this.cart.filter(item => item.id !== productId);
+                this.saveCart();
+                this.updateCartCount();
+                this.displayCart();
+                this.showNotification('Товар удален из корзины');
+            }
+
+            clearCart() {
+                if (this.cart.length === 0) {
+                    this.showNotification('Корзина уже пуста', true);
+                    return;
+                }
+                
+                this.cart = [];
+                this.saveCart();
+                this.updateCartCount();
+                this.displayCart();
+                this.showNotification('Корзина очищена');
+            }
+
+            shareCart() {
+                if (this.cart.length === 0) {
+                    this.showNotification('Корзина пуста', true);
+                    return;
+                }
+
+                const cartItems = this.cart.map(item => 
+                    `${item.name} - ${this.formatPrice(item.price)}`
+                ).join('\n');
+
+                const total = this.cart.reduce((sum, item) => sum + item.price, 0);
+                const shareText = `Моя корзина в PC Master:\n\n${cartItems}\n\nИтого: ${this.formatPrice(total)}\n\nПосмотреть: ${window.location.href}`;
+
+                this.showShareModal(shareText, 'Корзина PC Master');
+            }
+
+            shareProduct(productId) {
+                const allProducts = [...products.featured, ...products.gaming, ...products.office, ...products.components];
+                const product = allProducts.find(p => p.id === productId);
+                
+                if (!product) return;
+
+                const shareText = `${product.name}\n${product.description}\n\nЦена: ${this.formatPrice(product.price)}\n\n${window.location.origin}${window.location.pathname}?product=${productId}`;
+
+                this.showShareModal(shareText, product.name);
+            }
+
+            showShareModal(shareText, title) {
+                this.currentShareText = shareText;
+                this.currentShareTitle = title;
+                
+                const shareUrl = `https://pcmaster.ru/share?text=${encodeURIComponent(shareText)}`;
+                document.getElementById('shareUrl').value = shareUrl;
+                
+                document.getElementById('shareModal').classList.add('active');
+            }
+
+            hideShareModal() {
+                document.getElementById('shareModal').classList.remove('active');
+            }
+
+            handleShare(platform) {
+                const text = this.currentShareText;
+                const title = this.currentShareTitle;
+                
+                let shareUrl = '';
+                
+                switch(platform) {
+                    case 'vk':
+                        shareUrl = `https://vk.com/share.php?url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent(title)}&description=${encodeURIComponent(text)}`;
+                        break;
+                    case 'telegram':
+                        shareUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`;
+                        break;
+                    case 'whatsapp':
+                        shareUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + window.location.href)}`;
+                        break;
+                    case 'copy':
+                        this.copyShareUrl();
+                        return;
+                }
+                
+                if (shareUrl) {
+                    window.open(shareUrl, '_blank', 'width=600,height=400');
+                    this.showNotification('Открывается окно для публикации');
+                }
+            }
+
+            copyShareUrl() {
+                const shareUrlInput = document.getElementById('shareUrl');
+                shareUrlInput.select();
+                document.execCommand('copy');
+                this.showNotification('Ссылка скопирована в буфер обмена');
+            }
+
+            toggleCompare(productId) {
+                const allProducts = [...products.featured, ...products.gaming, ...products.office, ...products.components];
+                const product = allProducts.find(p => p.id === productId);
+                
+                if (!product) return;
+
+                const existingIndex = this.compare.findIndex(item => item.id === productId);
+                
+                if (existingIndex >= 0) {
+                    this.compare.splice(existingIndex, 1);
+                    this.showNotification('Товар удален из сравнения');
+                } else {
+                    if (this.compare.length >= 4) {
+                        this.showNotification('Можно сравнивать не более 4 товаров', true);
+                        return;
+                    }
+                    this.compare.push(product);
+                    this.showNotification('Товар добавлен в сравнение');
+                }
+                
+                this.saveCompare();
+                this.updateCompareCount();
+                
+                // Обновить отображение товара на текущей странице
+                if (this.currentPage === 'gaming') {
+                    this.displayGamingProducts();
+                } else if (this.currentPage === 'office') {
+                    this.displayOfficeProducts();
+                } else if (this.currentPage === 'components') {
+                    this.displayComponentsProducts();
+                } else if (this.currentPage === 'home') {
+                    this.displayFeaturedProducts();
+                } else if (this.currentPage === 'productDetail') {
+                    this.showProductDetail(productId);
+                }
+            }
+
+            showCompareModal() {
+                if (this.compare.length === 0) {
+                    this.showNotification('Добавьте товары для сравнения', true);
+                    return;
+                }
+
+                document.getElementById('compareModal').classList.add('active');
+                this.displayCompare();
+            }
+
+            hideCompareModal() {
+                document.getElementById('compareModal').classList.remove('active');
+            }
+
+            displayCompare() {
+                const container = document.getElementById('compareContent');
+                
+                if (this.compare.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 2rem; color: #666;">
+                            <i class="fas fa-balance-scale" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                            <h3 style="color: var(--dark); margin-bottom: 1rem;">Нет товаров для сравнения</h3>
+                            <p>Добавьте товары из каталога</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Получаем все возможные характеристики из всех товаров
+                const allSpecs = {};
+                this.compare.forEach(product => {
+                    if (product.specs) {
+                        Object.keys(product.specs).forEach(spec => {
+                            allSpecs[spec] = true;
+                        });
+                    }
+                });
+
+                const specsList = Object.keys(allSpecs);
+
+                container.innerHTML = `
+                    <table class="compare-table">
+                        <thead>
+                            <tr>
+                                <th>Характеристика</th>
+                                ${this.compare.map(product => `
+                                    <th class="compare-product">
+                                        <div class="compare-product-image">${product.image}</div>
+                                        <div>${product.name}</div>
+                                        <div class="product-price">${this.formatPrice(product.price)}</div>
+                                        <div style="margin-top: 1rem;">
+                                            <button class="btn btn-outline" onclick="pcmaster.toggleCompare(${product.id})" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+                                                <i class="fas fa-times"></i> Удалить
+                                            </button>
+                                        </div>
+                                    </th>
+                                `).join('')}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${specsList.map(spec => `
+                                <tr>
+                                    <td><strong>${spec}</strong></td>
+                                    ${this.compare.map(product => `
+                                        <td>${product.specs && product.specs[spec] ? product.specs[spec] : '-'}</td>
+                                    `).join('')}
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            }
+
+            clearCompare() {
+                this.compare = [];
+                this.saveCompare();
+                this.updateCompareCount();
+                this.hideCompareModal();
+                this.showNotification('Список сравнения очищен');
+                
+                // Обновить отображение товаров на текущей странице
+                if (this.currentPage === 'gaming') {
+                    this.displayGamingProducts();
+                } else if (this.currentPage === 'office') {
+                    this.displayOfficeProducts();
+                } else if (this.currentPage === 'components') {
+                    this.displayComponentsProducts();
+                } else if (this.currentPage === 'home') {
+                    this.displayFeaturedProducts();
+                }
+            }
+
+            handleSearch(query, page) {
+                const searchTerm = query.toLowerCase().trim();
+                
+                if (!searchTerm) {
+                    // Если поисковый запрос пустой, показать все товары
+                    switch(page) {
+                        case 'home':
+                            this.displayFeaturedProducts();
+                            break;
+                        case 'gaming':
+                            this.displayGamingProducts();
+                            break;
+                        case 'office':
+                            this.displayOfficeProducts();
+                            break;
+                        case 'components':
+                            this.displayComponentsProducts();
+                            break;
+                    }
+                    return;
+                }
+                
+                let productsToSearch = [];
+                
+                switch(page) {
+                    case 'home':
+                        productsToSearch = products.featured;
+                        break;
+                    case 'gaming':
+                        productsToSearch = [...products.featured.filter(p => p.category === 'gaming'), ...products.gaming];
+                        break;
+                    case 'office':
+                        productsToSearch = [...products.featured.filter(p => p.category === 'office'), ...products.office];
+                        break;
+                    case 'components':
+                        productsToSearch = [...products.featured.filter(p => p.category === 'components' || p.category === 'monitors'), ...products.components];
+                        break;
+                }
+                
+                const filteredProducts = productsToSearch.filter(product => 
+                    product.name.toLowerCase().includes(searchTerm) || 
+                    product.description.toLowerCase().includes(searchTerm)
+                );
+                
+                const containerId = page + 'Products';
+                const container = document.getElementById(containerId);
+                
+                if (container) {
+                    if (filteredProducts.length === 0) {
+                        container.innerHTML = `
+                            <div style="text-align: center; padding: 3rem; color: #666; grid-column: 1 / -1;">
+                                <i class="fas fa-search" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                                <h3 style="color: var(--dark); margin-bottom: 1rem;">Товары не найдены</h3>
+                                <p>Попробуйте изменить поисковый запрос</p>
+                            </div>
+                        `;
+                    } else {
+                        container.innerHTML = filteredProducts.map(product => this.createProductCard(product)).join('');
+                    }
+                }
+            }
+
+            showAuthModal() {
+                document.getElementById('authModal').classList.add('active');
+            }
+
+            hideAuthModal() {
+                document.getElementById('authModal').classList.remove('active');
+            }
+
+            switchAuthTab(tabName) {
+                document.querySelectorAll('.auth-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                document.querySelectorAll('.auth-form').forEach(form => {
+                    form.classList.remove('active');
+                });
+
+                document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+                document.getElementById(tabName + 'Form').classList.add('active');
+            }
+
+            handleLogin() {
+                this.currentUser = {
+                    name: 'Пользователь',
+                    email: 'user@example.com'
+                };
+                localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+                
+                this.hideAuthModal();
+                this.updateUserUI();
+                this.showNotification('Вы успешно вошли в систему');
+            }
+
+            handleRegister() {
+                this.currentUser = {
+                    name: document.querySelector('#registerForm input[type="text"]').value,
+                    email: document.querySelector('#registerForm input[type="email"]').value
+                };
+                localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+                
+                this.hideAuthModal();
+                this.updateUserUI();
+                this.showNotification('Регистрация прошла успешно!');
+            }
+
+            updateUserUI() {
+                const authBtn = document.getElementById('authBtn');
+                if (this.currentUser) {
+                    authBtn.innerHTML = `<i class="fas fa-user-check"></i> ${this.currentUser.name}`;
+                } else {
+                    authBtn.innerHTML = `<i class="fas fa-user"></i> Войти`;
+                }
+            }
+
+            updateCartCount() {
+                const totalItems = this.cart.length;
+                document.querySelectorAll('.cart-count').forEach(el => {
+                    el.textContent = totalItems;
+                });
+            }
+
+            updateCompareCount() {
+                const totalItems = this.compare.length;
+                document.querySelectorAll('.compare-count').forEach(el => {
+                    el.textContent = totalItems;
+                });
+            }
+
+            saveCart() {
+                localStorage.setItem('cart', JSON.stringify(this.cart));
+            }
+
+            saveCompare() {
+                localStorage.setItem('compare', JSON.stringify(this.compare));
+            }
+
+            formatPrice(price) {
+                return new Intl.NumberFormat('ru-RU', {
+                    style: 'currency',
+                    currency: 'RUB',
+                    minimumFractionDigits: 0
+                }).format(price);
+            }
+
+            showNotification(message, isError = false) {
+                const notification = document.getElementById('notification');
+                notification.textContent = message;
+                notification.className = `notification ${isError ? 'error' : ''}`;
+                notification.classList.add('show');
+
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        // Инициализация приложения
+        const pcmaster = new PCMaster();
+
+        // Закрытие модальных окон при клике вне их
+        document.getElementById('authModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('authModal')) {
+                pcmaster.hideAuthModal();
+            }
+        });
+
+        document.getElementById('compareModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('compareModal')) {
+                pcmaster.hideCompareModal();
+            }
+        });
+
+        document.getElementById('shareModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('shareModal')) {
+                pcmaster.hideShareModal();
+            }
+        });
+    </script>
+</body>
+</html>
