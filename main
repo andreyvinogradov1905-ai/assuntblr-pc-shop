@@ -1,6 +1,6 @@
-git init
+git clone https://github.com/ВАШ_USERNAME/assuntblr-pc-shop.git
+cd assuntblr-pc-shop
+# Добавьте файлы index.html и README.md
 git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/yourusername/pc-master-store.git
-git push -u origin main
+git commit -m "Добавлен сайт магазина"
+git push
